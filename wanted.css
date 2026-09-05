@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Rye&display=swap');
+
+/* Wanted-poster theme — separate from the case-file look in style.css.
+   Meant for a single character bio page, styled like an old BOLO/wanted sheet. */
+
+:root {
+  --poster-paper: #ecdfc0;
+  --poster-edge: #c8b98c;
+  --poster-ink: #2b2115;
+  --poster-red: #641212;
+}
+
+body.wanted-body {
+  margin: 0;
+  min-height: 100vh;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  font-family: 'Courier Prime', monospace;
+  color: var(--poster-ink);
+}
+
+.poster {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background-image: url('https://i.imgur.com/4yTt7B8.png');
+  background-size: cover;
+  background-position: center;
+  border: 10px solid var(--poster-ink);
+  outline: 2px solid var(--poster-edge);
+  outline-offset: -18px;
+  padding: 30px 28px 26px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.5);
+
+}
+
+/* torn/rough edge illusion */
+.poster::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border: 1px solid rgba(0,0,0,0.15);
+  pointer-events: none;
+}
+
+.poster-heading {
+  text-align: center;
+  font-family: 'Rye', 'Special Elite', serif;
+  font-size: 44px;
+  letter-spacing: 4px;
+  margin: 0 0 4px;
+  color: var(--poster-ink);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+}
+
+.poster-subheading {
+  text-align: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--poster-red);
+  margin: 0 0 18px;
+  border-top: 2px solid var(--poster-ink);
+  border-bottom: 2px solid var(--poster-ink);
+  padding: 6px 0;
+}
+
+.poster-photo {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  box-sizing: border-box;
+  
+  border: 3px solid var(--poster-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--poster-ink);
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.poster-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.poster-name {
+  text-align: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 20px;
+  letter-spacing: 2px;
+  margin: 0 0 4px;
+}
+
+.poster-alias {
+  text-align: center;
+  font-size: 12px;
+  color: #5a5138;
+  margin: 0 0 18px;
+  font-style: italic;
+}
+
+.poster-details {
+  border-top: 1px dashed var(--poster-edge);
+  padding-top: 14px;
+}
+
+.poster-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  padding: 4px 0;
+  border-bottom: 1px dotted var(--poster-edge);
+}
+
+.poster-row span:first-child {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #5a5138;
+}
+
+.poster-row span:last-child {
+  font-weight: 700;
+  text-align: right;
+}
+
+.poster-description {
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 16px 0;
+}
+
+.poster-reward {
+  text-align: center;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 2px solid var(--poster-ink);
+}
+
+.poster-reward-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--poster-red);
+}
+
+.poster-reward-amount {
+  font-family: 'Rye', serif;
+  font-size: 26px;
+  color: var(--poster-ink);
+}
+
+.poster-stamp {
+  display: block;
+  width: fit-content;
+  margin: 18px auto 0;
+  border: 3px solid var(--poster-red);
+  color: var(--poster-red);
+  font-family: 'Special Elite', monospace;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 4px 14px;
+  transform: rotate(-5deg);
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.poster-back-link {
+  display: block;
+  text-align: center;
+  margin-top: 18px;
+  font-size: 11px;
+  color: #cfc6a8;
+  text-decoration: underline;
+}
+
+.poster-footer {
+  text-align: center;
+  font-size: 11px;
+  color: #5a5138;
+  margin-top: 18px;
+}
