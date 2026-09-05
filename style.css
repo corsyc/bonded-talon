@@ -1,0 +1,432 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap');
+
+:root {
+  --paper: #fffbf3;
+  --paper-dark: #d9d2ba;
+  --ink: #1c1a15;
+  --ink-faded: #4a4636;
+  --red-stamp: #8b1a1a;
+  --line: #b8ae8f;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--paper);
+  background-image:
+    radial-gradient(ellipse at top left, rgba(0,0,0,0.05), transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(0,0,0,0.07), transparent 60%);
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.025),
+    rgba(0,0,0,0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 5;
+}
+
+.corner-logos {
+  position: fixed;
+  top: 14px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.corner-logos img {
+  width: 88px;
+  height: auto;
+  max-height: 54px;
+  object-fit: contain;
+}
+
+.login-wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+  background: var(--paper-dark);
+  border: 1px solid var(--ink-faded);
+  padding: 36px 32px 28px;
+  box-shadow: 0 2px 0 var(--line), 0 12px 30px rgba(0,0,0,0.25);
+}
+
+.letterhead { text-align: center; margin-bottom: 18px; }
+
+.seal {
+  font-size: 28px;
+  color: var(--red-stamp);
+  margin-bottom: 6px;
+}
+
+.seal img {
+  display: block;
+  width: 64px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.letterhead h1 {
+  font-family: 'Special Elite', 'Courier Prime', monospace;
+  font-size: 26px;
+  letter-spacing: 4px;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--ink-faded);
+  text-transform: uppercase;
+  margin: 6px 0 0;
+}
+
+.stamp {
+  display: inline-block;
+  border: 3px solid var(--red-stamp);
+  color: var(--red-stamp);
+  font-family: 'Special Elite', monospace;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 4px 12px;
+  transform: rotate(-4deg);
+  font-size: 13px;
+  margin: 0 auto 22px;
+  display: block;
+  width: fit-content;
+  opacity: 0.85;
+}
+
+.field { margin-bottom: 16px; }
+
+label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-faded);
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 9px 10px;
+  background: var(--paper);
+  border: 1px solid var(--ink-faded);
+  font-family: 'Courier Prime', monospace;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--ink);
+  background: #fff;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12.5px;
+    margin-bottom:8px;
+  }
+
+  th, td{
+    border:1px solid var(--rule);
+    padding:6px 8px;
+    text-align:left;
+    vertical-align:top;
+  }
+
+  th{
+    color:var(--ink-faded);
+    font-weight:400;
+    font-size:11px;
+    letter-spacing:0.5px;
+  }
+
+  .section-label{
+    font-size:11px;
+    letter-spacing:1.5px;
+    color:var(--amber);
+    margin:26px 0 6px;
+    border-bottom:1px dotted var(--rule);
+    padding-bottom:4px;
+  }
+
+  pre.org-chart{
+    font-family:inherit;
+    font-size:12px;
+    color:var(--ink-faded);
+    background:#5031022c;
+    border:1px solid var(--rule);
+    padding:14px 16px;
+    white-space:pre;
+    overflow-x:auto;
+    margin:0 0 8px;
+  }
+
+button {
+  width: 100%;
+  padding: 11px;
+  margin-top: 6px;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  font-family: 'Special Elite', monospace;
+  letter-spacing: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+button:hover { background: var(--red-stamp); }
+
+.error-msg {
+  min-height: 18px;
+  color: var(--red-stamp);
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.footnote {
+  margin-top: 20px;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--ink-faded);
+  text-align: center;
+  border-top: 1px dashed var(--line);
+  padding-top: 12px;
+}
+
+/* ---------- Case file page ---------- */
+
+.case-wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 720px;
+  background-image: url('https://i.pinimg.com/474x/2d/67/f9/2d67f9834649b584682ab58606f5a27e.jpg');
+  border: 1px solid var(--ink-faded);
+  padding: 40px 44px;
+  box-shadow: 0 2px 0 var(--line), 0 12px 30px rgba(0,0,0,0.25);
+  margin: 30px auto;
+}
+
+.case-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+}
+
+.case-header h1 {
+  font-family: 'Special Elite', monospace;
+  font-size: 22px;
+  letter-spacing: 2px;
+  margin: 0 0 4px;
+}
+
+.case-meta {
+  font-size: 11px;
+  color: var(--ink-faded);
+  text-align: right;
+  line-height: 1.6;
+}
+
+.case-stamp {
+  display: inline-block;
+  border: 3px solid var(--red-stamp);
+  color: var(--red-stamp);
+  font-family: 'Special Elite', monospace;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 3px 10px;
+  transform: rotate(-3deg);
+  font-size: 12px;
+  float: right;
+  margin: -6px 0 14px 14px;
+  opacity: 0.85;
+}
+
+.section-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-faded);
+  margin: 22px 0 6px;
+  border-bottom: 1px dashed var(--line);
+  padding-bottom: 4px;
+}
+
+.case-wrap p {
+  font-size: 14.5px;
+  line-height: 1.7;
+  margin: 0 0 12px;
+}
+
+.redacted {
+  background: var(--ink);
+  color: var(--ink);
+  padding: 0 4px;
+  user-select: none;
+}
+
+.logout-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 28px;
+  border-top: 1px dashed var(--line);
+  padding-top: 14px;
+}
+
+.logout-bar button {
+  width: auto;
+  padding: 8px 16px;
+  font-size: 11px;
+}
+
+@media (max-width: 600px) {
+  .case-wrap { padding: 26px 22px; }
+  .case-header { flex-direction: column; }
+  .case-meta { text-align: left; margin-top: 10px; }
+}
+
+/* ---------- Folder / file listing ---------- */
+
+.folder-wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 640px;
+  margin: 30px auto;
+}
+
+.folder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.folder-header h1 {
+  font-family: 'Special Elite', monospace;
+  font-size: 22px;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.folder-sub {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--ink-faded);
+  margin: 0 0 18px;
+}
+
+.file-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.file-item {
+  display: block;
+  background: var(--paper-dark);
+  border: 1px solid var(--ink-faded);
+  border-left: 6px solid var(--ink);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  box-shadow: 0 2px 0 var(--line);
+}
+
+.file-item:hover {
+  transform: translateX(2px);
+  box-shadow: 2px 4px 0 var(--line);
+}
+
+.file-item.locked {
+  opacity: 0.55;
+  cursor: not-allowed;
+  border-left-color: var(--ink-faded);
+}
+
+.file-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-id {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--ink-faded);
+}
+
+.file-status {
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border: 1px solid currentColor;
+}
+
+.file-status.open { color: var(--red-stamp); }
+.file-status.locked-status { color: var(--ink-faded); }
+
+.file-title {
+  font-family: 'Special Elite', monospace;
+  font-size: 16px;
+  margin: 6px 0 2px;
+}
+
+.file-desc {
+  font-size: 12.5px;
+  color: var(--ink-faded);
+  margin: 0;
+}
+
+.folder-logout {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.folder-logout button {
+  width: auto;
+  padding: 8px 16px;
+  font-size: 11px;
+}
+
+.handwritten {
+  font-family: 'Zeyada', cursive;
+  font-size: 28px;
+  color: var(--ink);
+  line-height: 1;
+}

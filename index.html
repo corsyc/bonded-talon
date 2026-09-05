@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>EQUITY INQUIRY — Restricted Access</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scanlines"></div>
+<div class="corner-logos" aria-hidden="true">
+  <img src="pictures/EquityInquiryDark.png" alt="">
+
+</div>
+
+<div class="login-wrap">
+  <div class="letterhead">
+    <div class="seal"> <img src="pictures/EquityInquiryDark.png" alt="Equity Inquiry Seal"> </div>
+    <h1>EQUITY INQUIRY</h1>
+    <p class="subtitle">Office of Case Records &nbsp;•&nbsp; Restricted Terminal</p>
+  </div>
+
+  <div class="stamp">CLASSIFIED</div>
+
+  <form id="login-form" autocomplete="off">
+    <div class="field">
+      <label for="username">Badge ID</label>
+      <input type="text" id="username" name="username" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <label for="password">Access Code</label>
+      <input type="password" id="password" name="password" autocomplete="off">
+    </div>
+    <button type="submit">AUTHENTICATE</button>
+    <p id="error-msg" class="error-msg"></p>
+  </form>
+
+  <p class="footnote">Unauthorized access to case files is a violation of Inquiry Protocol 7. All login attempts are logged.</p>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>

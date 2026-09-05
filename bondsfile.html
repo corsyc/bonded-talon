@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>SUBJECT DOSSIER — Bond Jarbed</title>
+  <style>
+    :root {
+      --paper: #0a0a0c;
+      --paper-raised: #06060a;
+      --ink: #807ed8;
+      --ink-faded: rgb(152, 158, 236);
+      --rule: #fefeff;
+      --stamp-red: #9c2b21;
+      --amber: #c5c5c5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Courier New", Courier, monospace;
+      line-height: 1.6;
+    }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(to bottom,
+          rgba(255, 255, 255, 0.025) 0px,
+          rgba(255, 255, 255, 0.025) 1px,
+          transparent 1px,
+          transparent 3px);
+      z-index: 50;
+    }
+
+    .case-wrap {
+      max-width: 720px;
+      margin: 48px auto;
+      padding: 36px 40px 28px;
+      background: var(--paper-raised);
+      border: 1px solid var(--rule);
+      position: relative;
+    }
+
+    .case-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 18px;
+      margin-bottom: 22px;
+    }
+
+    .case-heading {
+      min-width: 0;
+    }
+
+    .case-head-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    h1 {
+      font-size: 22px;
+      letter-spacing: 2px;
+      margin: 0 0 4px;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .case-meta {
+      background: rgba(0, 0, 0, 0.82);
+      border: 1px solid rgba(156, 43, 33, 0.8);
+      color: #ff5a4d;
+      font-size: 10px;
+      line-height: 1.7;
+      letter-spacing: 1px;
+      text-align: left;
+      padding: 8px 10px;
+      min-width: 220px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+      text-shadow: 0 0 4px rgba(255, 90, 77, 0.25);
+    }
+
+    .case-meta strong {
+      color: #ff7d74;
+      font-weight: 700;
+    }
+
+    .case-stamp {
+      display: inline-block;
+      margin: 0 0 12px auto;
+      border: 2px solid var(--stamp-red);
+      color: var(--stamp-red);
+      background: rgba(156, 43, 33, 0.06);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      padding: 6px 12px;
+      transform: rotate(7deg) skewX(-6deg);
+      opacity: 0.9;
+      box-shadow: 0 0 0 1px rgba(156, 43, 33, 0.25);
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: var(--amber);
+      margin: 26px 0 6px;
+      border-bottom: 1px dotted var(--rule);
+      padding-bottom: 4px;
+    }
+
+    p {
+      font-size: 14px;
+      margin: 0 0 12px;
+    }
+
+    .redacted {
+      background: #1a1a1a;
+      color: #1a1a1a;
+      padding: 0 2px;
+      user-select: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      margin-bottom: 8px;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--rule);
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--ink-faded);
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      width: 32%;
+    }
+
+
+    .intake-grid {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .intake-photos {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 0 0 180px;
+    }
+
+    .mugshot {
+      width: 180px;
+      height: 220px;
+      border: 1px solid var(--rule);
+      background:
+        repeating-linear-gradient(45deg, #17171a 0 6px, #131316 6px 12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--ink-faded);
+      font-size: 10.5px;
+      letter-spacing: 1px;
+      padding: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mugshot img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      filter: grayscale(0.1) contrast(1.08);
+    }
+
+    .id-plate {
+      font-size: 10px;
+      color: var(--ink-faded);
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .intake-table {
+      flex: 1;
+      min-width: 260px;
+    }
+
+
+    .print-card {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .print-box {
+      aspect-ratio: 1;
+      border: 1px solid var(--rule);
+      background: #dedefa;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .print-box svg,
+    .print-box img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      opacity: 0.8;
+    }
+
+    .print-box .print-label {
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 8.5px;
+      color: var(--ink-faded);
+      letter-spacing: 0.5px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .print-box.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-faded);
+      font-size: 9px;
+      text-align: center;
+      padding: 6px;
+    }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .evidence-item {
+      border: 1px solid var(--rule);
+      background: #09090a;
+    }
+
+    .evidence-thumb {
+      height: 100px;
+      background: repeating-linear-gradient(135deg, #0f0f17 0 8px, #0c0c12 8px 16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-faded);
+      font-size: 10px;
+      text-align: center;
+      padding: 6px;
+    }
+
+    .evidence-caption {
+      font-size: 10.5px;
+      padding: 6px 8px;
+      color: var(--ink);
+      border-top: 1px solid var(--rule);
+    }
+
+    .evidence-tag {
+      display: block;
+      color: var(--amber);
+      font-size: 9.5px;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 8px;
+      font-size: 13.5px;
+    }
+
+    .checklist li {
+      margin-bottom: 5px;
+    }
+
+    .checklist li::before {
+      content: "▣ ";
+      color: var(--amber);
+    }
+
+    .logout-bar {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid var(--rule);
+      margin-top: 30px;
+      padding-top: 18px;
+    }
+
+    .logout-bar a {
+      font-size: 11px;
+      color: var(--ink-faded);
+      text-decoration: underline;
+      margin-right: auto;
+    }
+
+    .logout-bar button {
+      background: transparent;
+      border: 1px solid var(--stamp-red);
+      color: var(--stamp-red);
+      font-family: inherit;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+
+    .logout-bar button:hover {
+      background: var(--stamp-red);
+      color: var(--paper);
+    }
+
+    .footnote {
+      font-size: 10.5px;
+      color: var(--ink-faded);
+      text-align: center;
+      margin-top: 20px;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="scanlines"></div>
+
+  <div class="case-wrap">
+    <div class="case-header">
+      <div class="case-heading">
+        <h1>SUBJECT DOSSIER</h1>
+        <div style="font-size:12px; color:var(--ink-faded); letter-spacing:1px;">
+          RECORD NO. 0342-A — INTAKE / IDENTIFICATION
+        </div>
+      </div>
+      <div class="case-head-right">
+        <div class="case-stamp">EYES ONLY</div>
+        <div class="case-meta">
+          Status: <strong>ACTIVE SUSPECT</strong><br>
+          Clearance: BADGE ID <strong>MaatZikora</strong><br>
+          Accessed: <span id="access-time"></span>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-label">Identification</p>
+    <div class="intake-grid">
+      <div class="intake-photos">
+        <div class="mugshot"><img src="pictures/bondsketch.png" alt="Bond Jarbed wanted poster sketch">
+        </div>
+        <div class="mugshot">PHOTO NOT<br>ON FILE<br><br>[ profile ]</div>
+        <div class="id-plate">BONDED TALON — 0342</div>
+      </div>
+
+      <table class="intake-table">
+        <tr>
+          <th>Full Name / Alias</th>
+          <td>Bond Jarbed</td>
+        </tr>
+        <tr>
+          <th>Alleged Rank</th>
+          <td>Boss</td>
+        </tr>
+        <tr>
+          <th>Organization</th>
+          <td>Bonded Talon</td>
+        </tr>
+        <tr>
+          <th>Date of Birth</th>
+          <td>17/04/2004</td>
+        </tr>
+        <tr>
+          <th>Height / Build</th>
+          <td>115cm, slender</td>
+        </tr>
+        <tr>
+          <th>Distinguishing Marks</th>
+          <td>Black striped blue fur with missing claws. Scar on his back.</td>
+        </tr>
+        <tr>
+          <th>Known Address</th>
+          <td><span class="redacted">████████████████</span></td>
+        </tr>
+        <tr>
+          <th>Front Business</th>
+          <td>Colsino</td>
+        </tr>
+        <tr>
+          <th>Territory</th>
+          <td><span class="redacted">████████████</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <p class="section-label">Fingerprint Card</p>
+    <div class="print-card">
+      <div class="print-box">
+        <img src="fingerprint.png" alt="Right thumb fingerprint" />
+        <span class="print-label">R. THUMB</span>
+      </div>
+      <div class="print-box empty">L. THUMB<br>— not collected —</div>
+      <div class="print-box empty">R. INDEX<br>— not collected —</div>
+      <div class="print-box empty">L. INDEX<br>— not collected —</div>
+      <div class="print-box empty">PALM<br>— not collected —</div>
+    </div>
+    <p style="font-size:11px; color:var(--ink-faded); margin-top:-4px;">
+      Right-thumb print collected from a wall. No other prints have been collected at this time.
+    </p>
+
+    <p class="section-label">Physical / Behavioral Notes</p>
+    <p>
+      Subject is consistently described by witnesses as nonchalant — moves and speaks with an unusual calm even in tense
+      or violent situations, rarely raising his voice or changing pace. This composure has been noted as unsettling to
+      those who've interacted with him directly.
+    </p>
+    <p>
+      Distinctive dress: long black jacket lined with yellow fur, worn in nearly every sighting regardless of season or
+      setting. Considered a reliable visual marker for identification at a distance.
+    </p>
+
+    <p>
+      Voice: low, even, unhurried. Does not raise volume when giving orders; associates reportedly comply without
+      needing him to repeat himself.
+    </p>
+
+    <p class="section-label">Confirmed Charges on File</p>
+    <ul class="checklist">
+      <li class="marked">Racketeering</li>
+      <li class="marked">Extortion — waterfront vendors</li>
+      <li class="marked">Money laundering via import business</li>
+      <li class="marked">Loan sharking</li>
+      <li class="marked">Bribery of port officials</li>
+      <li class="marked"> Manslaughter</li>
+      <li class="marked">Fraud</li>
+      <li class="marked">Illegal gambling operations</li>
+      <li class="marked">Kidnapping</li>
+      <li class="marked">Illegal possession of a concealed weapon</li>
+      <li class="marked">Assault with a deadly weapon or aggravated assault</li>
+      <li class="marked">Accessory after the fact</li>
+      <li class="marked">Arson</li>
+      <li class="marked">Malicious destruction of property</li>
+      <li class="marked">Destruction of property to intimidate</li>
+    </ul>
+
+    <p class="section-label">Evidence Associated With Subject</p>
+    <div class="evidence-grid">
+      <div class="evidence-item">
+        <div class="evidence-thumb">IMAGE NOT<br>ON FILE</div>
+        <div class="evidence-caption">
+          <span class="evidence-tag">EX-014</span>
+          Fur sample, Retake Hospital
+        </div>
+      </div>
+      <div class="evidence-item">
+        <div class="evidence-thumb">IMAGE NOT<br>ON FILE</div>
+        <div class="evidence-caption">
+          <span class="evidence-tag">EX-015</span>
+          Fingerprint, psychiatric facility
+        </div>
+      </div>
+      <div class="evidence-item">
+        <div class="evidence-thumb">IMAGE NOT<br>ON FILE</div>
+        <div class="evidence-caption">
+          <span class="evidence-tag">EX-016</span>
+          Marks on wall, Retake Hospital
+        </div>
+      </div>
+      <div class="evidence-item">
+        <div class="evidence-thumb">VIDEO NOT<br>ON FILE</div>
+        <div class="evidence-caption">
+          <span class="evidence-tag">EX-017</span>
+          Camera footage, Retake Hospital
+        </div>
+      </div>
+    </div>
+
+    <p class="section-label">Cross-Referenced Files</p>
+    <p>Case File No. 0342 (Bonded Talon organization) — <a href="case-0342.html" style="color:var(--amber);">open case
+        file</a></p>
+    <p>Case File No. 0216 (Predatory Strike gang) — <a href="case-0216.html" style="color:var(--amber);">open case
+        file</a></p>
+
+    <div class="logout-bar">
+      <a href="files.html">&larr; Back to folder</a>
+      <button onclick="endSession()">END SESSION</button>
+    </div>
+
+    <div class="footnote">This record is a work of fiction. Any resemblance to real persons is coincidental.</div>
+  </div>
+
+  <script>
+    document.getElementById("access-time").textContent = new Date().toLocaleString();
+
+    function endSession() {
+      document.querySelector('.case-wrap').style.opacity = '0.15';
+      document.querySelector('.case-wrap').style.pointerEvents = 'none';
+      const notice = document.createElement('div');
+      notice.textContent = 'SESSION TERMINATED';
+      notice.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:#9c2b21;font-family:monospace;font-size:20px;letter-spacing:4px;z-index:100;';
+      document.body.appendChild(notice);
+    }
+  </script>
+</body>
+
+</html>
