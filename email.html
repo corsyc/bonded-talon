@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Inbox</title>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --panel: #ffffff;
+      --border: #e2e5e9;
+      --text: #202124;
+      --text-dim: #5f6368;
+      --text-faint: #80868b;
+      --accent: #1a73e8;
+      --unread-bg: #f2f6fc;
+      --hover: #f1f3f4;
+      --star: #f4b400;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Google Sans', Roboto, Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 8px 16px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 150px;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      background-image: url("wanted-poster/pictures/tails.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-size: 20px;
+      color: #5f6368;
+      letter-spacing: .2px;
+    }
+
+    .search {
+      flex: 1;
+      max-width: 720px;
+      display: flex;
+      align-items: center;
+      background: #eaf1fb;
+      border-radius: 24px;
+      padding: 0 16px;
+      height: 44px;
+      color: var(--text-dim);
+      font-size: 15px;
+      gap: 12px;
+    }
+
+    .search svg {
+      flex-shrink: 0;
+    }
+
+    .topbar-spacer {
+      flex: 1;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #7b3fe4;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    /* Body layout */
+    .body {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 232px;
+      flex-shrink: 0;
+      padding: 12px 0;
+      overflow-y: auto;
+    }
+
+    .compose-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 8px 16px 8px;
+      padding: 14px 22px 14px 16px;
+      background: #c2e7ff;
+      border-radius: 16px;
+      width: fit-content;
+      font-size: 14px;
+      font-weight: 500;
+      color: #001d35;
+      cursor: default;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 20px 0 24px;
+      height: 32px;
+      border-radius: 0 16px 16px 0;
+      font-size: 14px;
+      color: var(--text);
+      cursor: default;
+    }
+
+    .nav-item.active {
+      background: #d3e3fd;
+      font-weight: 700;
+    }
+
+    .nav-item svg {
+      flex-shrink: 0;
+      color: var(--text-dim);
+    }
+
+    .nav-item.active svg {
+      color: #001d35;
+    }
+
+    .nav-count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* Message list */
+    .list-pane {
+      width: 400px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      background: var(--panel);
+    }
+
+    .list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 16px;
+      border-bottom: 1px solid #f1f3f4;
+      cursor: default;
+    }
+
+    .row:hover {
+      background: var(--hover);
+    }
+
+    .row.selected {
+      background: #d3e3fd;
+    }
+
+    .row .star {
+      color: #c4c7c5;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .row .star.filled {
+      color: var(--star);
+    }
+
+    .row-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .row-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .row-sender {
+      font-size: 13.5px;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .row.unread .row-sender {
+      font-weight: 700;
+    }
+
+    .row-time {
+      font-size: 12px;
+      color: var(--text-faint);
+      flex-shrink: 0;
+    }
+
+    .row-subject {
+      font-size: 13px;
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .row.unread .row-subject {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .row-preview {
+      color: var(--text-faint);
+      font-weight: 400;
+    }
+
+    /* Reading pane */
+    .read-pane {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--panel);
+      padding: 20px 32px 60px 32px;
+    }
+
+    .read-toolbar {
+      display: flex;
+      gap: 20px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    .subject-line {
+      font-size: 22px;
+      font-weight: 400;
+      margin: 8px 0 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tag {
+      font-size: 11px;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-weight: 500;
+    }
+
+    .msg-head {
+      display: flex;
+      gap: 14px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .msg-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #616161;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .msg-head-main {
+      flex: 1;
+    }
+
+    .msg-head-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .msg-from-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .msg-from-email {
+      font-size: 13px;
+      color: var(--text-faint);
+      font-weight: 400;
+    }
+
+    .msg-time {
+      font-size: 12.5px;
+      color: var(--text-faint);
+    }
+
+    .msg-to {
+      font-size: 12.5px;
+      color: var(--text-faint);
+      margin-top: 2px;
+    }
+
+    .msg-body {
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: #202124;
+      max-width: 640px;
+    }
+
+    .msg-body p {
+      margin: 0 0 16px 0;
+    }
+
+    .msg-body .sig {
+      color: var(--text-dim);
+      margin-top: 24px;
+    }
+
+    .attachment {
+      margin-top: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--text-dim);
+      max-width: 260px;
+    }
+
+    .attachment-icon {
+      width: 32px;
+      height: 36px;
+      background: #e8710a;
+      border-radius: 2px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .attachment-name {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #dadce0;
+      border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-name">MTP</div>
+      </div>
+      <div class="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        Search mail
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="avatar">MZ</div>
+    </div>
+
+    <div class="body">
+
+      <div class="sidebar">
+        <div class="compose-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#001d35" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Compose
+        </div>
+        <div class="nav-item active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 4h16v12H5.17L4 17.17V4zm0-2a2 2 0 00-2 2v16l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2H4z" />
+          </svg>
+          Inbox
+          <span class="nav-count">3</span>
+        </div>
+        <div class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9" />
+          </svg>
+          Starred
+        </div>
+        <div class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          Snoozed
+        </div>
+        <div class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+          </svg>
+          Sent
+        </div>
+        <div class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6" />
+            <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+            <path d="M10 11v6" />
+            <path d="M14 11v6" />
+          </svg>
+          Trash
+        </div>
+      </div>
+
+      <div class="list-pane">
+        <div class="list-header">
+          <span>Inbox</span>
+          <span>1–3 of 3</span>
+        </div>
+
+        <div class="row">
+          <svg class="star filled" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9" />
+          </svg>
+          <div class="row-main">
+            <div class="row-top">
+              <div class="row-sender"><td><span class="redacted">████████</span> Psychiatric Facility</td></div>
+              <div class="row-time">Tue</div>
+            </div>
+            <div class="row-subject">Security Footage <span class="row-preview">— Security footage from the...</span></div>
+          </div>
+        </div>
+
+        <div class="row unread selected">
+          <svg class="star filled" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9" />
+          </svg>
+          <div class="row-main">
+            <div class="row-top">
+              <div class="row-sender">V. Kiran</div>
+              <div class="row-time">11:47 PM</div>
+            </div>
+            <div class="row-subject">Predatory Strike<span class="row-preview">— Good evening, Mr. Zikora....</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <svg class="star" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9" />
+          </svg>
+          <div class="row-main">
+            <div class="row-top">
+              <div class="row-sender">Newsletter</div>
+              <div class="row-time">Sep 3</div>
+            </div>
+            <div class="row-subject">Your weekly digest <span class="row-preview">— Top stories picked for you...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="read-pane">
+        <div class="read-toolbar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16v12H5.17L4 17.17V4z" />
+          </svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6" />
+            <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+          </svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+        </div>
+
+        <div class="subject-line">
+          Predatory Strike
+          <span class="tag">Inbox</span>
+        </div>
+
+        <div class="msg-head">
+          <div class="msg-avatar">V</div>
+          <div class="msg-head-main">
+            <div class="msg-head-top">
+              <div>
+                <span class="msg-from-name">V. Kiran</span>
+                <span class="msg-from-email">&lt;v.kiran.ei@EquityInquiry.g0v&gt;</span>
+              </div>
+              <div class="msg-time">Sep 6, 2022, 11:47 PM</div>
+            </div>
+            <div class="msg-to">to me</div>
+          </div>
+        </div>
+
+        <div class="msg-body">
+          <p>Good evening, Mr. Zikora. </p>
+          <p>As you've requested, I searched around and found an old recording gathered from the scene by a security camera.</p>
+          <p>We believe this may be able to provide some information about the suspect.</p>
+          <p>Take a listen to it and gather as much clues and evidence as possible. When you're done, update the case files with the information you find.</p>
+          <p class="sig">— V. Kiran</p>
+        </div>
+
+        <div class="attachment">
+          <div class="attachment-icon"></div>
+          <div>
+            <a class="attachment-name" href="evidence_36.html">evidence_36.wav</a>
+            <div>212 KB</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>
